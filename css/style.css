@@ -492,6 +492,8 @@ body[data-view="home"] .chrome { display: none; }
   display: flex;
   align-items: center;
   justify-content: center;
+  width: 100%;
+  height: 100%;
   max-width: 100%;
   max-height: 100%;
   will-change: transform, opacity;
@@ -519,13 +521,33 @@ body[data-view="home"] .chrome { display: none; }
     0 8px 24px -8px rgba(0, 0, 0, 0.10);
 }
 
-/* Click any sheet to open the full-size image in a new tab */
+/* Hover a sheet -> gentle zoom + deeper shadow (same feel as Others board);
+   click opens the full-size image in a new tab. The zoom lives on the link
+   so it never fights the per-image parallax transform in JS. */
 .detail-slide__link {
-  display: contents;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  max-width: 100%;
+  pointer-events: none;
+  transition: transform 0.7s var(--ease-out-expo);
+  will-change: transform;
 }
 
 .detail-slide__link img {
+  pointer-events: auto;
   cursor: zoom-out;
+}
+
+.detail-slide__link:has(img:hover) {
+  transform: scale(1.015);
+}
+
+.detail-slide__link:has(img:hover) img {
+  box-shadow:
+    0 24px 60px -18px rgba(0, 0, 0, 0.28),
+    0 8px 24px -8px rgba(0, 0, 0, 0.14);
 }
 
 /* Back to project index */
