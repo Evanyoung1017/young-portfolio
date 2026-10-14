@@ -31,9 +31,11 @@ function render(project) {
   track.innerHTML = pages.map((src, i) => `
     <div class="detail-slide">
       <div class="detail-slide__frame is-entering" style="--d:${i * 70}ms">
-        <img src="${src}" alt="${project.title} — sheet ${i + 1}"
-             draggable="false" decoding="async"
-             loading="${i === 0 ? 'eager' : 'lazy'}">
+        <a class="detail-slide__link" href="${src}" target="_blank" rel="noopener">
+          <img src="${src}" alt="${project.title} — sheet ${i + 1}"
+               draggable="false" decoding="async"
+               loading="${i === 0 ? 'eager' : 'lazy'}">
+        </a>
       </div>
     </div>
   `).join('');

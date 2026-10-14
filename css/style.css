@@ -519,6 +519,15 @@ body[data-view="home"] .chrome { display: none; }
     0 8px 24px -8px rgba(0, 0, 0, 0.10);
 }
 
+/* Click any sheet to open the full-size image in a new tab */
+.detail-slide__link {
+  display: contents;
+}
+
+.detail-slide__link img {
+  cursor: zoom-out;
+}
+
 /* Back to project index */
 .detail-back {
   position: fixed;
