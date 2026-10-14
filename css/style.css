@@ -1,0 +1,667 @@
+/* =========================================================
+   YOUNG. — ARCHITECT · Portfolio Website
+   Minimal black & white aesthetic
+   ========================================================= */
+
+/* ---------- Reset & Base ---------- */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html, body {
+  height: 100%;
+  background: #ffffff;
+  color: #111111;
+  font-family: 'Helvetica Neue', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-weight: 400;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow: hidden;
+}
+
+a { color: inherit; text-decoration: none; }
+button { background: none; border: none; cursor: pointer; font: inherit; color: inherit; }
+img { display: block; max-width: 100%; }
+
+:root {
+  --color-bg: #ffffff;
+  --color-text: #111111;
+  --color-muted: #888888;
+  --color-light: #cccccc;
+  --color-hover: #555555;
+  --chrome-height: 70px;
+  --transition-fast: 0.3s ease;
+  --transition-medium: 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  --ease-out-expo: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+/* =========================================================
+   Global Chrome (YOUNG. + hamburger)
+   ========================================================= */
+.chrome {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  height: var(--chrome-height);
+  padding: 0 32px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  z-index: 1000;
+  mix-blend-mode: difference;
+  color: #ffffff;
+}
+
+.chrome__brand {
+  position: relative;
+  font-size: 20px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  color: #ffffff;
+  padding: 4px 0;
+  transition: letter-spacing 0.4s var(--ease-out-expo),
+              transform 0.4s var(--ease-spring);
+}
+
+.chrome__brand::after {
+  content: '';
+  position: absolute;
+  left: 0; bottom: 0;
+  width: 100%;
+  height: 1.5px;
+  background: currentColor;
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform 0.45s var(--ease-out-expo);
+}
+
+.chrome__brand:hover { letter-spacing: 0.12em; }
+.chrome__brand:hover::after { transform: scaleX(1); }
+.chrome__brand:active { transform: scale(0.94); }
+
+.chrome__menu {
+  position: relative;
+  width: 30px;
+  height: 22px;
+  transition: transform 0.45s var(--ease-spring);
+}
+
+.chrome__menu span {
+  position: absolute;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: #ffffff;
+  transform-origin: center center;
+  transition: transform 0.45s var(--ease-spring),
+              opacity 0.2s ease;
+}
+
+.chrome__menu span:nth-child(1) { top: 2px; }
+.chrome__menu span:nth-child(2) { top: 10px; }
+.chrome__menu span:nth-child(3) { top: 18px; }
+
+.chrome__menu:hover { transform: scale(1.15); }
+.chrome__menu:hover span:nth-child(1) { transform: translateY(8px) rotate(45deg); }
+.chrome__menu:hover span:nth-child(2) { opacity: 0; transform: scaleX(0); }
+.chrome__menu:hover span:nth-child(3) { transform: translateY(-8px) rotate(-45deg); }
+.chrome__menu:active { transform: scale(0.9); }
+
+body[data-view="home"] .chrome { display: none; }
+
+/* =========================================================
+   View System
+   ========================================================= */
+.view {
+  position: fixed;
+  inset: 0;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity var(--transition-medium), visibility var(--transition-medium);
+}
+
+.view.is-active {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+}
+
+/* =========================================================
+   HOME VIEW
+   ========================================================= */
+.view--home {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #ffffff;
+}
+
+.home__content {
+  text-align: center;
+  padding: 24px 40px;
+  cursor: pointer;
+  user-select: none;
+}
+
+.home__brand {
+  position: relative;
+  display: inline-block;
+  font-size: clamp(60px, 15vw, 200px);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1;
+  margin-bottom: 20px;
+  transition: transform 0.55s var(--ease-spring),
+              letter-spacing 0.55s ease;
+}
+
+.home__brand::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  bottom: -16px;
+  height: 4px;
+  width: 0;
+  background: #111111;
+  transform: translateX(-50%);
+  transition: width 0.5s var(--ease-out-expo) 0.05s;
+}
+
+.home__subtitle {
+  font-size: clamp(14px, 2vw, 24px);
+  letter-spacing: 0.5em;
+  text-indent: 0.5em;
+  transition: letter-spacing 0.55s ease, transform 0.55s ease;
+}
+
+.home__content:hover .home__brand { transform: scale(1.04); letter-spacing: 0.01em; }
+.home__content:hover .home__brand::after { width: 28%; }
+.home__content:hover .home__subtitle { letter-spacing: 0.64em; transform: translateY(4px); }
+.home__content:active .home__brand { transform: scale(0.98); transition-duration: 0.12s; }
+
+.home__hint {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 28px;
+  font-size: 11px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: #888888;
+  opacity: 0;
+  transform: translateY(8px);
+  transition: opacity 0.4s ease 0.05s,
+              transform 0.45s var(--ease-out-expo) 0.05s;
+}
+
+.home__hint__arrow {
+  display: inline-block;
+  transition: transform 0.4s var(--ease-out-expo);
+}
+
+.home__content:hover .home__hint { opacity: 1; transform: translateY(0); }
+.home__content:hover .home__hint__arrow { transform: translateX(4px); }
+.home__content:active .home__hint { opacity: 0.6; }
+
+/* =========================================================
+   MENU VIEW
+   ========================================================= */
+.view--menu {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.menu__nav {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: 100%;
+  max-width: 800px;
+  padding: 0 40px;
+}
+
+.menu__item {
+  display: flex;
+  align-items: baseline;
+  gap: 30px;
+  padding: 20px 0;
+  border-bottom: 1px solid #eeeeee;
+  white-space: nowrap;
+  transition: transform var(--transition-medium), color var(--transition-fast);
+}
+
+.menu__item:hover {
+  transform: translateX(30px);
+  color: var(--color-hover);
+}
+
+.menu__number {
+  font-size: 14px;
+  color: var(--color-muted);
+}
+
+.menu__text {
+  font-size: clamp(48px, 10vw, 120px);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1;
+}
+
+/* =========================================================
+   PAGE HEADER
+   ========================================================= */
+.page-header {
+  position: absolute;
+  top: calc(var(--chrome-height) + 24px);
+  left: 40px;
+  right: 40px;
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  z-index: 50;
+  pointer-events: none;
+}
+
+.page-header__label {
+  font-size: 12px;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+}
+
+.page-header__count {
+  font-size: 12px;
+  letter-spacing: 0.15em;
+  color: var(--color-muted);
+}
+
+/* =========================================================
+   PROJECT LIST — inertia scroll + JS ease settle
+   ========================================================= */
+.view--projects { background: #ffffff; }
+
+.project-list {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: center;
+  /* Natural gallery spacing — the row simply scrolls when the projects
+     overflow the viewport (2 projects may fit, 4 will paginate). */
+  gap: 8vw;
+  padding: 0 10vw;
+  overflow-x: auto;
+  overflow-y: hidden;
+  /* Native snap only assists touch/trackpad; wheel motion is driven by
+     JS and suspends this while moving. */
+  scroll-snap-type: x proximity;
+  scroll-padding: 0 10vw;
+  scrollbar-width: none;
+  touch-action: pan-x;
+  overscroll-behavior-x: contain;
+  -webkit-overflow-scrolling: touch;
+}
+
+.project-list::-webkit-scrollbar { display: none; }
+
+.project-card {
+  flex: 0 0 auto;
+  width: min(300px, 54vw);
+  min-width: 0;
+  scroll-snap-align: center;
+  cursor: pointer;
+}
+
+/* Every cover occupies the SAME fixed frame; images fill it with a
+   uniform crop so cards align regardless of source ratio. */
+.project-card__image {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 2 / 3;
+  overflow: hidden;
+  background: #f0f0f0;
+  line-height: 0;
+}
+
+.project-card__image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  filter: grayscale(1) contrast(1.05);
+  /* Own composited layer: scrolling is pure GPU composite, the
+     grayscale filter is baked once instead of repainting per frame. */
+  transform: translateZ(0) scale(1);
+  backface-visibility: hidden;
+  will-change: transform;
+  transition: transform 0.7s cubic-bezier(0.22, 1, 0.36, 1),
+              filter 0.5s ease;
+}
+
+/* Hover: the cover visibly grows inside its frame + returns to colour. */
+.project-card:hover .project-card__image img {
+  transform: scale(1.09) translateZ(0);
+  filter: grayscale(0) contrast(1);
+}
+
+.project-card__info {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 16px;
+  padding: 18px 4px 0;
+}
+
+.project-card__title {
+  font-size: 19px;
+  line-height: 1.35;
+  /* Reserve two lines so a one-line title and a wrapped long title
+     produce IDENTICAL card heights — cover frames then align exactly. */
+  min-height: 2.7em;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  transition: color var(--transition-fast);
+}
+
+.project-card:hover .project-card__title { color: var(--color-hover); }
+
+.project-card__meta {
+  margin-top: 8px;
+  font-size: 12px;
+  letter-spacing: 0.06em;
+  color: var(--color-muted);
+}
+
+.project-card__number {
+  font-size: 13px;
+  color: var(--color-muted);
+  padding-top: 4px;
+}
+
+/* ---------- Pager controls (bottom of project list) ---------- */
+.pager-controls {
+  position: fixed;
+  bottom: 36px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 22px;
+  z-index: 120;
+  transition: opacity 0.35s ease, transform 0.35s var(--ease-out-expo);
+}
+
+/* Hidden when all project cards fit without scrolling */
+.pager-controls.is-hidden {
+  opacity: 0;
+  pointer-events: none;
+  transform: translateX(-50%) translateY(10px);
+}
+
+.pager-btn {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: 1px solid #dddddd;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #333333;
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  transition: transform 0.35s var(--ease-out-expo),
+              border-color 0.25s ease,
+              background-color 0.25s ease,
+              opacity 0.25s ease;
+}
+
+.pager-btn:hover {
+  transform: scale(1.08);
+  border-color: #111111;
+  background: #111111;
+  color: #ffffff;
+}
+
+.pager-btn--next:hover svg { transform: translateX(2px); }
+.pager-btn--prev:hover svg { transform: translateX(-2px); }
+.pager-btn svg { transition: transform 0.35s var(--ease-out-expo); }
+.pager-btn:active { transform: scale(0.94); }
+.pager-btn.is-disabled { opacity: 0.25; pointer-events: none; }
+
+.pager-counter {
+  min-width: 52px;
+  text-align: center;
+  font-size: 12px;
+  letter-spacing: 0.15em;
+  color: #555555;
+  font-variant-numeric: tabular-nums;
+}
+
+.pager-counter__sep {
+  color: var(--color-light);
+  margin: 0 2px;
+}
+
+/* =========================================================
+   PROJECT DETAIL — continuous inertia gallery
+   ========================================================= */
+.view--detail {
+  background: #f4f4f2;
+}
+
+.detail-track {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  overflow-y: hidden;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+  touch-action: pan-x;
+  overscroll-behavior-x: contain;
+  -webkit-overflow-scrolling: touch;
+}
+
+.detail-track::-webkit-scrollbar { display: none; }
+
+.detail-slide {
+  flex: 0 0 100vw;
+  width: 100vw;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  scroll-snap-align: center;
+  /* Touch/trackpad flings must also stop at EVERY sheet — browsing is
+     strictly one page at a time (mouse wheel enforces the same in JS). */
+  scroll-snap-stop: always;
+  padding: 112px 7vw 104px;
+  /* Skip raster work for offscreen giant PNGs */
+  content-visibility: auto;
+  contain-intrinsic-size: 100vw 100vh;
+}
+
+.detail-slide__frame {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  max-width: 100%;
+  max-height: 100%;
+  will-change: transform, opacity;
+  transition: opacity 0.7s ease var(--d, 0ms),
+              transform 0.95s var(--ease-out-expo) var(--d, 0ms);
+}
+
+.detail-slide__frame.is-entering {
+  opacity: 0;
+  transform: translateY(34px) scale(0.965);
+}
+
+.detail-slide__frame img {
+  max-width: min(88vw, 1760px);
+  max-height: 100%;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  user-select: none;
+  -webkit-user-drag: none;
+  will-change: transform, opacity;
+  backface-visibility: hidden;
+  box-shadow:
+    0 30px 80px -24px rgba(0, 0, 0, 0.22),
+    0 8px 24px -8px rgba(0, 0, 0, 0.10);
+}
+
+/* Back to project index */
+.detail-back {
+  position: fixed;
+  left: 32px;
+  bottom: 34px;
+  z-index: 300;
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  padding: 11px 20px 11px 16px;
+  border-radius: 999px;
+  border: 1px solid rgba(0, 0, 0, 0.14);
+  background: rgba(255, 255, 255, 0.78);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  font-size: 12px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #222222;
+  transition: transform 0.35s var(--ease-out-expo),
+              background-color 0.25s ease,
+              color 0.25s ease,
+              border-color 0.25s ease;
+}
+
+.detail-back svg { transition: transform 0.35s var(--ease-out-expo); }
+
+.detail-back:hover {
+  transform: scale(1.05);
+  background: #111111;
+  border-color: #111111;
+  color: #ffffff;
+}
+
+.detail-back:hover svg { transform: translateX(-4px); }
+.detail-back:active { transform: scale(0.95); }
+
+/* Sheet progress dots */
+.detail-progress {
+  position: fixed;
+  bottom: 44px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 300;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.detail-dot {
+  position: relative;
+  width: calc(8px + 16px * var(--p, 0));
+  height: 22px;
+  padding: 0;
+  transition: width 0.18s linear;
+}
+
+.detail-dot::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 50%;
+  height: 3px;
+  border-radius: 2px;
+  transform: translateY(-50%);
+  background: rgba(0, 0, 0, calc(0.18 + 0.62 * var(--p, 0)));
+}
+
+/* =========================================================
+   OTHERS / CONTACT
+   ========================================================= */
+.placeholder-content,
+.contact-content {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+}
+
+.placeholder-content p:first-child {
+  font-size: 22px;
+  font-weight: 600;
+}
+
+.placeholder-sub {
+  font-size: 13px;
+  letter-spacing: 0.12em;
+  color: var(--color-muted);
+}
+
+.contact-link {
+  font-size: clamp(22px, 4vw, 40px);
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  position: relative;
+  padding-bottom: 8px;
+  transition: color var(--transition-fast);
+}
+
+.contact-link::after {
+  content: '';
+  position: absolute;
+  left: 0; bottom: 0;
+  width: 100%;
+  height: 1.5px;
+  background: currentColor;
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform 0.45s var(--ease-out-expo);
+}
+
+.contact-link:hover { color: var(--color-hover); }
+.contact-link:hover::after { transform: scaleX(1); }
+
+.contact-sub {
+  font-size: 13px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--color-muted);
+}
+
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
+@media (max-width: 768px) {
+  .chrome { padding: 0 20px; }
+
+  .menu__nav { padding: 0 20px; }
+  .menu__item { gap: 20px; }
+
+  .page-header { left: 20px; right: 20px; }
+
+  .detail-slide { padding: 100px 4vw 96px; }
+
+  .detail-back {
+    left: 20px;
+    bottom: 28px;
+    padding: 9px 16px 9px 13px;
+  }
+
+  .detail-progress { bottom: 36px; }
+}
