@@ -537,7 +537,7 @@ body[data-view="home"] .chrome { display: none; }
 
 .detail-slide__link img {
   pointer-events: auto;
-  cursor: zoom-out;
+  cursor: pointer;
 }
 
 .detail-slide__link:has(img:hover) {
