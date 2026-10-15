@@ -550,6 +550,21 @@ body[data-view="home"] .chrome { display: none; }
     0 8px 24px -8px rgba(0, 0, 0, 0.14);
 }
 
+/* Video sheet: same framing/shadow as the image sheets, inline playback */
+.detail-slide__video {
+  max-width: min(88vw, 1760px);
+  max-height: 100%;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  background: #000;
+  will-change: transform, opacity;
+  backface-visibility: hidden;
+  box-shadow:
+    0 30px 80px -24px rgba(0, 0, 0, 0.22),
+    0 8px 24px -8px rgba(0, 0, 0, 0.10);
+}
+
 /* Back to project index */
 .detail-back {
   position: fixed;

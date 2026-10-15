@@ -28,20 +28,27 @@ function render(project) {
     : [project.imageUrl];
 
   // ---- Sheets (images only, nothing floats over them) ----
-  track.innerHTML = pages.map((src, i) => `
-    <div class="detail-slide">
-      <div class="detail-slide__frame is-entering" style="--d:${i * 70}ms">
-        <a class="detail-slide__link" href="${src}" target="_blank" rel="noopener">
+  track.innerHTML = pages.map((page, i) => {
+    const isVideo = typeof page === 'object' && page.type === 'video';
+    const src = isVideo ? page.src : page;
+    const media = isVideo
+      ? `<video class="detail-slide__video" src="${src}"
+               controls preload="metadata" playsinline></video>`
+      : `<a class="detail-slide__link" href="${src}" target="_blank" rel="noopener">
           <img src="${src}" alt="${project.title} — sheet ${i + 1}"
                draggable="false" decoding="async"
                loading="${i === 0 ? 'eager' : 'lazy'}">
-        </a>
+        </a>`;
+    return `
+    <div class="detail-slide">
+      <div class="detail-slide__frame is-entering" style="--d:${i * 70}ms">
+        ${media}
       </div>
-    </div>
-  `).join('');
+    </div>`;
+  }).join('');
 
   frameEls = [...track.querySelectorAll('.detail-slide__frame')];
-  imgEls = [...track.querySelectorAll('.detail-slide__frame img')];
+  imgEls = [...track.querySelectorAll('.detail-slide__frame img, .detail-slide__frame video')];
 
   // Trigger staggered entrance after paint (two rAFs so the hidden
   // state is committed before transitions run).
@@ -75,6 +82,10 @@ function onScroll() {
 
     imgEls.forEach((img, i) => {
       const d = P - i;
+      // Auto-pause a video sheet as soon as the user pages away from it
+      if (img.tagName === 'VIDEO' && Math.abs(d) > 0.6 && !img.paused) {
+        img.pause();
+      }
       if (Math.abs(d) > 1.3) {
         img.style.opacity = '0';
         return;
