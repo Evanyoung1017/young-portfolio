@@ -34,6 +34,20 @@ export const projects = [
       'assets/projects/p02/page-4.png',
       'assets/projects/p02/page-5.png'
     ]
+  },
+  {
+    id: 'p03',
+    index: '03',
+    title: 'Industrial Oasis',
+    type: 'Course / Competition',
+    year: '2025 Summer',
+    location: 'Shougang Park, Beijing',
+    imageUrl: 'assets/projects/p03/cover.png',
+    pages: [
+      'assets/projects/p03/page-1.png',
+      'assets/projects/p03/page-2.png',
+      'assets/projects/p03/page-3.png'
+    ]
   }
 ];
 
