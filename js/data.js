@@ -49,6 +49,24 @@ export const projects = [
       'assets/projects/p03/page-2.png',
       'assets/projects/p03/page-3.png'
     ]
+  },
+  {
+    id: 'p04',
+    index: '04',
+    title: 'The Observer Within',
+    type: 'Individual',
+    year: '2026 Autumn',
+    location: '',
+    // No site for this installation — card meta follows the board's
+    // own wording: Worktype, then Time.
+    meta: ['Individual', 'Space Installation', '2026 Autumn'],
+    imageUrl: 'assets/projects/p04/cover.png',
+    pages: [
+      'assets/projects/p04/page-1.png',
+      'assets/projects/p04/page-2.png',
+      'assets/projects/p04/page-3.png',
+      'assets/projects/p04/page-4.png'
+    ]
   }
 ];
 

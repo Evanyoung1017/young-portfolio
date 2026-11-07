@@ -77,7 +77,11 @@ function render() {
   if (rendered) return;
   if (!container) return;
 
-  container.innerHTML = projects.map(project => `
+  container.innerHTML = projects.map(project => {
+    const meta = (project.meta && project.meta.length
+      ? project.meta
+      : [project.type, project.year, project.location]).filter(Boolean).join(' · ');
+    return `
     <article class="project-card" data-id="${project.id}">
       <div class="project-card__image">
         <img src="${project.imageUrl}" alt="${project.title}" loading="lazy" decoding="async">
@@ -85,12 +89,13 @@ function render() {
       <div class="project-card__info">
         <div>
           <h3 class="project-card__title">${project.title}</h3>
-          <p class="project-card__meta">${project.type} · ${project.year} · ${project.location}</p>
+          <p class="project-card__meta">${meta}</p>
         </div>
         <span class="project-card__number">${project.index}</span>
       </div>
     </article>
-  `).join('');
+  `;
+  }).join('');
 
   container.querySelectorAll('.project-card').forEach(card => {
     card.addEventListener('click', () => {
