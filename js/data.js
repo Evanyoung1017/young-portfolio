@@ -66,7 +66,8 @@ export const projects = [
       'assets/projects/p04/page-2.png',
       'assets/projects/p04/page-3.png',
       'assets/projects/p04/page-4.png',
-      'assets/projects/p04/page-5.png'
+      'assets/projects/p04/page-5.png',
+      { type: 'video', src: 'assets/projects/p04/page-6.mp4' }
     ]
   }
 ];
