@@ -77,9 +77,10 @@ if (contactEmail) {
 // =====================================================================
 // Image protection — remove the easy "save picture" paths.
 // Delegated on document so dynamically rendered images (project list,
-// detail gallery, Others board) are covered without re-binding.
+// detail gallery, Others board, lightbox) are covered without re-binding.
 // Note: client-side only; devtools/cache/screenshots remain possible.
-// Left-click behavior (open full size) is intentionally untouched.
+// Full-size viewing happens in the in-site lightbox below, never via the
+// browser's native raw-image tab (which we cannot protect).
 // =====================================================================
 document.addEventListener('contextmenu', (e) => {
   if (e.target.closest && e.target.closest('img')) e.preventDefault();
@@ -92,6 +93,55 @@ document.addEventListener('dragstart', (e) => {
     && e.target.closest('a').querySelector('img');
   if (onImage || onImageLink) e.preventDefault();
 });
+
+// =====================================================================
+// In-site lightbox — full-size image viewer inside our own page so the
+// right-click/drag protection above keeps working. Intercepts clicks on
+// detail sheets and the Others board; the anchors keep target="_blank"
+// only as a no-JS fallback.
+// =====================================================================
+const lightbox = document.createElement('div');
+lightbox.className = 'lightbox';
+lightbox.innerHTML = `
+  <button class="lightbox__close" type="button" aria-label="Close full-size view">&times;</button>
+  <img class="lightbox__img" alt="Full-size view">
+`;
+document.body.appendChild(lightbox);
+const lightboxImg = lightbox.querySelector('.lightbox__img');
+
+const openLightbox = (src) => {
+  lightboxImg.src = src;
+  lightbox.classList.add('is-open');
+  document.body.style.overflow = 'hidden';
+};
+
+const closeLightbox = () => {
+  lightbox.classList.remove('is-open');
+  document.body.style.overflow = '';
+  lightboxImg.removeAttribute('src');
+};
+
+document.addEventListener('click', (e) => {
+  const opener = e.target.closest
+    && e.target.closest('a.detail-slide__link, a.others-board');
+  if (opener) {
+    e.preventDefault();
+    openLightbox(opener.href);
+    return;
+  }
+  if (e.target === lightbox || e.target.closest('.lightbox__close')) {
+    closeLightbox();
+  }
+});
+
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape' && lightbox.classList.contains('is-open')) {
+    closeLightbox();
+  }
+});
+
+// Close when the route changes underneath the overlay
+window.addEventListener('hashchange', closeLightbox);
 
 // Chrome navigation handlers
 document.querySelectorAll('[data-nav="home"]').forEach(el => {

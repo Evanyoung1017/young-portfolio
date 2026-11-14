@@ -773,3 +773,58 @@ body[data-view="home"] .chrome { display: none; }
 
   .detail-progress { bottom: 36px; }
 }
+
+/* =====================================================================
+   In-site lightbox (full-size image viewer, protected from save)
+   ===================================================================== */
+.lightbox {
+  position: fixed;
+  inset: 0;
+  z-index: 2000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 48px;
+  background: rgba(10, 10, 10, 0.94);
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.32s ease, visibility 0.32s ease;
+  cursor: zoom-out;
+}
+
+.lightbox.is-open {
+  opacity: 1;
+  visibility: visible;
+}
+
+.lightbox__img {
+  max-width: 95vw;
+  max-height: 92vh;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  cursor: default;
+  box-shadow:
+    0 30px 90px -20px rgba(0, 0, 0, 0.55),
+    0 10px 30px -10px rgba(0, 0, 0, 0.35);
+}
+
+.lightbox__close {
+  position: absolute;
+  top: 26px;
+  right: 38px;
+  padding: 4px 10px;
+  background: none;
+  border: 0;
+  color: rgba(255, 255, 255, 0.85);
+  font-size: 42px;
+  font-weight: 300;
+  line-height: 1;
+  cursor: pointer;
+  transition: color 0.25s ease, transform 0.25s ease;
+}
+
+.lightbox__close:hover {
+  color: #fff;
+  transform: scale(1.12);
+}
