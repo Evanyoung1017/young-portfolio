@@ -74,6 +74,25 @@ if (contactEmail) {
   });
 }
 
+// =====================================================================
+// Image protection — remove the easy "save picture" paths.
+// Delegated on document so dynamically rendered images (project list,
+// detail gallery, Others board) are covered without re-binding.
+// Note: client-side only; devtools/cache/screenshots remain possible.
+// Left-click behavior (open full size) is intentionally untouched.
+// =====================================================================
+document.addEventListener('contextmenu', (e) => {
+  if (e.target.closest && e.target.closest('img')) e.preventDefault();
+});
+
+document.addEventListener('dragstart', (e) => {
+  const onImage = e.target.tagName === 'IMG';
+  const onImageLink = e.target.closest
+    && e.target.closest('a')
+    && e.target.closest('a').querySelector('img');
+  if (onImage || onImageLink) e.preventDefault();
+});
+
 // Chrome navigation handlers
 document.querySelectorAll('[data-nav="home"]').forEach(el => {
   el.addEventListener('click', (e) => {
