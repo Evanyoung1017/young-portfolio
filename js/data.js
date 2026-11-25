@@ -8,7 +8,7 @@ export const projects = [
     index: '01',
     title: 'Boundary Between Digital Nomads',
     type: 'Individual Project',
-    year: '2025 Spring',
+    year: '2025 Autumn',
     location: 'Anji, Zhejiang',
     imageUrl: 'assets/projects/p01/cover.png',
     pages: [
@@ -25,7 +25,7 @@ export const projects = [
     index: '02',
     title: 'Echoes of Trauma',
     type: 'Individual Project',
-    year: '2025 Autumn',
+    year: '2026 Spring',
     location: 'Conceptual',
     imageUrl: 'assets/projects/p02/cover.png',
     pages: [
